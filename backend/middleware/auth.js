@@ -1,4 +1,4 @@
-const { verifyToken } = require('../utils/jwt');
+import { verifyToken } from '../utils/jwt.js';
 
 const authenticate = async (req, res, next) => {
   try {
@@ -16,4 +16,4 @@ const authenticate = async (req, res, next) => {
   }
 };
 
-module.exports = authenticate;
+export default authenticate;

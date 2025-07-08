@@ -1,9 +1,10 @@
-const express = require('express');
-const cors = require('cors');
-require('dotenv').config();
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import { authRoutes, userRoutes, projectRoutes, taskRoutes } from './routes/index.js';
+import prisma from './utils/prisma.js';
 
-const { authRoutes, userRoutes, projectRoutes, taskRoutes } = require('./routes');
-const prisma = require('./utils/prisma');
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;

@@ -1,10 +1,10 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const bcrypt = require('bcryptjs');
-const { body, validationResult } = require('express-validator');
-const { generateToken } = require('../utils/jwt');
-const authenticate = require('../middleware/auth');
-const prisma = require('../utils/prisma');
+import bcrypt from 'bcryptjs';
+import { body, validationResult } from 'express-validator';
+import { generateToken } from '../utils/jwt.js';
+import authenticate from '../middleware/auth.js';
+import prisma from '../utils/prisma.js';
 
 router.post('/register', [
   body('email').isEmail().normalizeEmail(),
@@ -118,4 +118,4 @@ router.get('/me', authenticate, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

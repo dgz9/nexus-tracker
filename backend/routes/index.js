@@ -1,6 +1,6 @@
-module.exports = {
-  authRoutes: require('./auth'),
-  userRoutes: require('./users'),
-  projectRoutes: require('./projects'),
-  taskRoutes: require('./tasks')
-};
+import authRoutes from './auth.js';
+import userRoutes from './users.js';
+import projectRoutes from './projects.js';
+import taskRoutes from './tasks.js';
+
+export { authRoutes, userRoutes, projectRoutes, taskRoutes };

@@ -1,8 +1,8 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { body, validationResult } = require('express-validator');
-const authenticate = require('../middleware/auth');
-const prisma = require('../utils/prisma');
+import { body, validationResult } from 'express-validator';
+import authenticate from '../middleware/auth.js';
+import prisma from '../utils/prisma.js';
 
 router.get('/', authenticate, async (req, res) => {
   try {
@@ -213,4 +213,4 @@ router.get('/stats', authenticate, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

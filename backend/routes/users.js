@@ -1,9 +1,9 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const bcrypt = require('bcryptjs');
-const { body, validationResult } = require('express-validator');
-const authenticate = require('../middleware/auth');
-const prisma = require('../utils/prisma');
+import bcrypt from 'bcryptjs';
+import { body, validationResult } from 'express-validator';
+import authenticate from '../middleware/auth.js';
+import prisma from '../utils/prisma.js';
 
 router.put('/profile', authenticate, [
   body('name').trim().notEmpty().isLength({ min: 2 })
@@ -74,4 +74,4 @@ router.put('/password', authenticate, [
   }
 });
 
-module.exports = router;
+export default router;
