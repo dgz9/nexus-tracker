@@ -7,7 +7,7 @@ import './index.css'
 import App from './App.jsx'
 import AuthProvider from './contexts/AuthProvider'
 import { ThemeProvider } from './contexts/ThemeProvider'
-import { Analytics } from "@vercel/analytics/next"
+import { Analytics } from "@vercel/analytics/react"
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
