@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button, Card, Chip, Divider } from '@heroui/react';
 import { motion } from 'framer-motion';
 import { 
@@ -17,6 +17,7 @@ import { useAuth } from '../contexts/useAuth';
 
 const Landing = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const features = [
     {
       icon: <ListTodo className="w-8 h-8" />,
@@ -93,17 +94,16 @@ const Landing = () => {
                   </Button>
                 </Link>
               ) : (
-                <Link to="/register" className="w-full sm:w-auto">
-                  <Button 
-                    size="lg" 
-                    color="primary" 
-                    radius="full"
-                    className="font-semibold w-full sm:w-auto"
-                    endContent={<ArrowRight className="w-5 h-5" />}
-                  >
-                    Get Started Free
-                  </Button>
-                </Link>
+                <Button 
+                  size="lg" 
+                  color="primary" 
+                  radius="full"
+                  className="font-semibold w-full sm:w-auto"
+                  endContent={<ArrowRight className="w-5 h-5" />}
+                  onPress={() => navigate('/register')}
+                >
+                  Get Started Free
+                </Button>
               )}
               <Button 
                 size="lg" 
@@ -229,17 +229,16 @@ const Landing = () => {
               No credit card required. No hidden fees. Just sign up and start being productive.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/register" className="w-full sm:w-auto">
-                <Button 
-                  size="lg" 
-                  color="default" 
-                  radius="full"
-                  className="font-semibold bg-white text-blue-600 w-full sm:w-auto"
-                  endContent={<ArrowRight className="w-5 h-5" />}
-                >
-                  Create Free Account
-                </Button>
-              </Link>
+              <Button 
+                size="lg" 
+                color="default" 
+                radius="full"
+                className="font-semibold bg-white text-blue-600 w-full sm:w-auto"
+                endContent={<ArrowRight className="w-5 h-5" />}
+                onPress={() => navigate('/register')}
+              >
+                Create Free Account
+              </Button>
               <Button
                 size="lg"
                 variant="bordered"
