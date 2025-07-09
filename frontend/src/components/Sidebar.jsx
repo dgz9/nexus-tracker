@@ -47,17 +47,15 @@ const Sidebar = ({
   };
 
   useEffect(() => {
-    if (isMobile && sidebarState !== 'hidden') {
+    if (isMobile) {
       setSidebarState('hidden');
-    } else if (isLarge && sidebarState === 'hidden') {
+    } else if (isLarge) {
       setSidebarState('partial');
     }
-  }, [isMobile, isLarge, sidebarState, setSidebarState]);
+  }, [isMobile, isLarge, setSidebarState]);
 
   const handleDeleteProject = async (project) => {
-    if (window.confirm(`Delete project "${project.name}"?`)) {
-      onDeleteProject(project);
-    }
+    onDeleteProject(project);
   };
 
   const toggleSidebar = () => {
@@ -130,36 +128,40 @@ const Sidebar = ({
           <ScrollShadow className="flex-1 p-2 overflow-y-auto">
             <div className="space-y-1">
               <Tooltip content="All Tasks" placement="right" isDisabled={sidebarState === 'full'}>
-                <Button
-                  variant={projectFilter === 'all' ? 'solid' : 'flat'}
+                <div className="relative">
+                  <Button
+                  variant={sidebarState === 'partial' ? 'flat' : (projectFilter === 'all' ? 'solid' : 'flat')}
                   color={projectFilter === 'all' ? 'primary' : 'default'}
-                  className={`${sidebarState === 'partial' ? 'w-10 h-10 min-w-0 p-0 mx-auto' : 'w-full px-3 justify-start h-auto min-h-10'
-                    }`}
+                  className={`${sidebarState === 'partial' ? 'w-10 h-10 min-w-0 p-0 mx-auto relative overflow-visible mb-1.5' : 'w-full px-3 justify-start h-auto min-h-10'
+                    } ${sidebarState === 'partial' && projectFilter === 'all' ? 'ring-2 ring-primary ring-offset-2 rounded-lg' : ''}`}
                   onPress={() => onProjectFilterChange('all')}
                   isIconOnly={sidebarState === 'partial'}
                 >
                   {sidebarState === 'partial' ? (
-                    <Hash className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                    <div className="w-10 h-10 rounded-md bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                      <Hash className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                    </div>
                   ) : (
                     <div className="flex items-center gap-3 w-full">
-                      <div className="p-1.5 rounded-lg bg-gray-200 dark:bg-gray-700 flex-shrink-0">
-                        <Hash className="w-4 h-4 text-gray-700 dark:text-gray-300" />
+                      <div className="w-8 h-8 rounded-lg bg-gray-200 dark:bg-gray-700 flex-shrink-0 flex items-center justify-center">
+                        <Hash className="w-5 h-5 text-gray-700 dark:text-gray-300" />
                       </div>
                       <span className="font-medium flex-1 text-left truncate">All Tasks</span>
                       <Chip size="sm" variant="flat">{totalTaskCount || 0}</Chip>
                     </div>
                   )}
-                </Button>
+                  </Button>
+                </div>
               </Tooltip>
 
               {projects.map((project) => (
                 <Tooltip key={project.id} content={project.name} placement="right" isDisabled={sidebarState === 'full'}>
                   <div className="relative group">
                     <Button
-                      variant={projectFilter === project.id ? 'solid' : 'flat'}
+                      variant={sidebarState === 'partial' ? 'flat' : (projectFilter === project.id ? 'solid' : 'flat')}
                       color={projectFilter === project.id ? 'primary' : 'default'}
-                      className={`${sidebarState === 'partial' ? 'w-10 h-10 min-w-0 p-0 mx-auto' : 'w-full px-3 pr-10 justify-start h-auto min-h-10'
-                        }`}
+                      className={`${sidebarState === 'partial' ? 'w-10 h-10 min-w-0 p-0 mx-auto relative overflow-visible' : 'w-full px-3 pr-10 justify-start h-auto min-h-10'
+                        } ${sidebarState === 'partial' && projectFilter === project.id ? 'ring-2 ring-primary ring-offset-2 rounded-lg' : ''}`}
                       onPress={() => onProjectFilterChange(project.id)}
                       isIconOnly={sidebarState === 'partial'}
                     >
