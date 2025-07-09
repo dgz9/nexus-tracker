@@ -112,7 +112,7 @@ const Landing = () => {
                 className="font-semibold w-full sm:w-auto"
                 startContent={<Github className="w-5 h-5" />}
                 as="a"
-                href="https://github.com"
+                href="https://github.com/dgz9/nexus-tracker"
                 target="_blank"
               >
                 View on GitHub
@@ -247,7 +247,7 @@ const Landing = () => {
                 className="font-semibold text-white border-white/50 hover:bg-white/10 w-full sm:w-auto"
                 startContent={<Github className="w-5 h-5" />}
                 as="a"
-                href="https://github.com"
+                href="https://github.com/dgz9/nexus-tracker"
                 target="_blank"
               >
                 Star on GitHub
@@ -273,7 +273,7 @@ const Landing = () => {
                 variant="light"
                 radius="full"
                 as="a"
-                href="https://github.com"
+                href="https://github.com/dgz9/nexus-tracker"
                 target="_blank"
               >
                 <Github className="w-5 h-5" />
@@ -283,7 +283,7 @@ const Landing = () => {
           <Divider className="my-8" />
           <div className="text-center text-sm text-gray-600 dark:text-gray-400">
             <p>Made with ❤️ by developers, for developers</p>
-            <p className="mt-2">© 2024 NexusTrack - MIT License</p>
+            <p className="mt-2">© 2025 NexusTrack - MIT License</p>
           </div>
         </div>
       </footer>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import useTask from '../hooks/useTask';
 import {
   Card,
   Button,
@@ -135,9 +136,19 @@ const Dashboard = () => {
     fetchStats();
   }, []);
 
+  const { 
+    loading: taskLoading,
+    error: taskError,
+    createTask,
+    updateTask,
+    deleteTask: deleteTaskApi,
+    updateTaskStatus,
+    fetchTasks: fetchTasksApi
+  } = useTask();
+
   const fetchTasks = async (projectId = null) => {
+    const url = projectId ? `/tasks?projectId=${projectId}` : '/tasks';
     try {
-      const url = projectId ? `/tasks?projectId=${projectId}` : '/tasks';
       const response = await axios.get(url);
       setTasks(response.data);
     } catch {
@@ -174,26 +185,29 @@ const Dashboard = () => {
 
     setSubmitting(true);
     try {
+      let result;
       if (taskModal.data) {
-        const response = await axios.put(`/tasks/${taskModal.data.id}`, taskFormData);
-        setTasks(tasks.map(task => task.id === taskModal.data.id ? response.data : task));
-
-        if (taskDetailsModal.data && taskDetailsModal.data.id === taskModal.data.id) {
-          taskDetailsModal.setData(response.data);
+        result = await updateTask(taskModal.data.id, taskFormData);
+        if (result.success) {
+          setTasks(tasks.map(task => task.id === taskModal.data.id ? result.data : task));
+          
+          if (taskDetailsModal.data && taskDetailsModal.data.id === taskModal.data.id) {
+            taskDetailsModal.setData(result.data);
+          }
         }
-
-        toast.success('Task updated successfully');
       } else {
-        const response = await axios.post('/tasks', taskFormData);
-        setTasks([response.data, ...tasks]);
-        toast.success('Task created successfully');
+        result = await createTask(taskFormData);
+        if (result.success) {
+          setTasks([result.data, ...tasks]);
+        }
       }
-      taskModal.close();
-      resetTaskForm();
-      fetchStats(projectFilter !== 'all' ? projectFilter : null);
-      fetchProjects();
-    } catch {
-      toast.error(taskModal.data ? 'Failed to update task' : 'Failed to create task');
+      
+      if (result.success) {
+        taskModal.close();
+        resetTaskForm();
+        fetchStats(projectFilter !== 'all' ? projectFilter : null);
+        fetchProjects();
+      }
     } finally {
       setSubmitting(false);
     }
@@ -249,42 +263,37 @@ const Dashboard = () => {
   };
 
   const handleDeleteTask = async (id) => {
-    try {
-      await axios.delete(`/tasks/${id}`);
+    const result = await deleteTaskApi(id);
+    if (result.success) {
       setTasks(tasks.filter(task => task.id !== id));
 
       if (taskDetailsModal.data && taskDetailsModal.data.id === id) {
         taskDetailsModal.close();
       }
 
-      toast.success('Task deleted successfully');
       fetchStats(projectFilter !== 'all' ? projectFilter : null);
       fetchProjects();
       deleteTaskModal.close();
-    } catch {
-      toast.error('Failed to delete task');
     }
   };
 
   const handleQuickStatusUpdate = async (taskId, newStatus) => {
-    try {
-      const task = tasks.find(t => t.id === taskId);
-      const response = await axios.put(`/tasks/${taskId}`, {
-        ...task,
-        status: newStatus,
-        projectId: task.project?.id || task.projectId
-      });
-      setTasks(tasks.map(t => t.id === taskId ? response.data : t));
+    const task = tasks.find(t => t.id === taskId);
+    const result = await updateTask(taskId, {
+      ...task,
+      status: newStatus,
+      projectId: task.project?.id || task.projectId
+    });
+    
+    if (result.success) {
+      setTasks(tasks.map(t => t.id === taskId ? result.data : t));
 
       if (taskDetailsModal.data && taskDetailsModal.data.id === taskId) {
-        taskDetailsModal.setData(response.data);
+        taskDetailsModal.setData(result.data);
       }
 
-      toast.success(`Task marked as ${newStatus.toLowerCase().replace('_', ' ')}`);
       fetchStats(projectFilter !== 'all' ? projectFilter : null);
       fetchProjects();
-    } catch {
-      toast.error('Failed to update task status');
     }
   };
 
