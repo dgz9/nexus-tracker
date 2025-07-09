@@ -30,7 +30,8 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  ButtonGroup
+  ButtonGroup,
+  addToast
 } from '@heroui/react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -59,7 +60,6 @@ import {
   ChevronRight
 } from 'lucide-react';
 import axios from 'axios';
-import toast from 'react-hot-toast';
 import { useAuth } from '../contexts/useAuth';
 import UniversalModal from '../components/UniversalModal';
 import Sidebar from '../components/Sidebar';
@@ -137,13 +137,9 @@ const Dashboard = () => {
   }, []);
 
   const { 
-    loading: taskLoading,
-    error: taskError,
     createTask,
     updateTask,
-    deleteTask: deleteTaskApi,
-    updateTaskStatus,
-    fetchTasks: fetchTasksApi
+    deleteTask: deleteTaskApi
   } = useTask();
 
   const fetchTasks = async (projectId = null) => {
@@ -152,7 +148,7 @@ const Dashboard = () => {
       const response = await axios.get(url);
       setTasks(response.data);
     } catch {
-      toast.error('Failed to fetch tasks');
+      addToast({ title: "Error", description: "Failed to fetch tasks", color: "danger", timeout: 5000 });
     } finally {
       setLoading(false);
     }
@@ -163,7 +159,7 @@ const Dashboard = () => {
       const response = await axios.get('/projects');
       setProjects(response.data);
     } catch {
-      toast.error('Failed to fetch projects');
+      addToast({ title: "Error", description: "Failed to fetch projects", color: "danger", timeout: 5000 });
     }
   };
 
@@ -179,7 +175,7 @@ const Dashboard = () => {
 
   const handleTaskSubmit = async () => {
     if (!taskFormData.title.trim()) {
-      toast.error('Task title is required');
+      addToast({ title: "Error", description: "Task title is required", color: "danger", timeout: 5000 });
       return;
     }
 
@@ -242,11 +238,11 @@ const Dashboard = () => {
       if (projectModal.data) {
         const response = await axios.put(`/projects/${projectModal.data.id}`, projectFormData);
         setProjects(projects.map(project => project.id === projectModal.data.id ? response.data : project));
-        toast.success('Project updated successfully');
+        addToast({ title: "Success", description: "Project updated successfully", color: "success", timeout: 5000 });
       } else {
         const response = await axios.post('/projects', projectFormData);
         setProjects([...projects, response.data]);
-        toast.success('Project created successfully');
+        addToast({ title: "Success", description: "Project created successfully", color: "success", timeout: 5000 });
 
         if (taskModal.isOpen) {
           setTaskFormData({ ...taskFormData, projectId: response.data.id });
@@ -256,7 +252,7 @@ const Dashboard = () => {
       resetProjectForm();
       fetchStats(projectFilter !== 'all' ? projectFilter : null);
     } catch {
-      toast.error(projectModal.data ? 'Failed to update project' : 'Failed to create project');
+      addToast({ title: "Error", description: projectModal.data ? "Failed to update project" : "Failed to create project", color: "danger", timeout: 5000 });
     } finally {
       setSubmitting(false);
     }
@@ -423,14 +419,14 @@ const Dashboard = () => {
           try {
             await axios.delete(`/projects/${project.id}`);
             setProjects(projects.filter(p => p.id !== project.id));
-            toast.success('Project deleted');
+            addToast({ title: "Success", description: "Project deleted", color: "success", timeout: 5000 });
             if (projectFilter === project.id) {
               handleProjectFilterChange('all');
             } else {
               fetchStats(projectFilter !== 'all' ? projectFilter : null);
             }
           } catch {
-            toast.error('Failed to delete project');
+            addToast({ title: "Error", description: "Failed to delete project", color: "danger", timeout: 5000 });
           }
         }}
         onNewProject={() => {

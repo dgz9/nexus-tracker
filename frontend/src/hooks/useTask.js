@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import axios from 'axios';
-import toast from 'react-hot-toast';
+import { addToast } from '@heroui/react';
 
 const useTask = () => {
   const [loading, setLoading] = useState(false);
@@ -11,12 +11,12 @@ const useTask = () => {
     setError(null);
     try {
       const response = await axios.post('/tasks', taskData);
-      toast.success('Task created successfully!');
+      addToast({ title: "Success", description: "Task created successfully!", color: "success", timeout: 5000 });
       return { success: true, data: response.data };
     } catch (err) {
       const message = err.response?.data?.error || 'Failed to create task';
       setError(message);
-      toast.error(message);
+      addToast({ title: "Error", description: message, color: "danger", timeout: 5000 });
       return { success: false, error: message };
     } finally {
       setLoading(false);
@@ -28,12 +28,12 @@ const useTask = () => {
     setError(null);
     try {
       const response = await axios.put(`/tasks/${taskId}`, updates);
-      toast.success('Task updated successfully!');
+      addToast({ title: "Success", description: "Task updated successfully!", color: "success", timeout: 5000 });
       return { success: true, data: response.data };
     } catch (err) {
       const message = err.response?.data?.error || 'Failed to update task';
       setError(message);
-      toast.error(message);
+      addToast({ title: "Error", description: message, color: "danger", timeout: 5000 });
       return { success: false, error: message };
     } finally {
       setLoading(false);
@@ -45,12 +45,12 @@ const useTask = () => {
     setError(null);
     try {
       await axios.delete(`/tasks/${taskId}`);
-      toast.success('Task deleted successfully!');
+      addToast({ title: "Success", description: "Task deleted successfully!", color: "success", timeout: 5000 });
       return { success: true };
     } catch (err) {
       const message = err.response?.data?.error || 'Failed to delete task';
       setError(message);
-      toast.error(message);
+      addToast({ title: "Error", description: message, color: "danger", timeout: 5000 });
       return { success: false, error: message };
     } finally {
       setLoading(false);
@@ -62,12 +62,12 @@ const useTask = () => {
     setError(null);
     try {
       const response = await axios.put(`/tasks/${taskId}/status`, { status });
-      toast.success('Task status updated!');
+      addToast({ title: "Success", description: "Task status updated!", color: "success", timeout: 5000 });
       return { success: true, data: response.data };
     } catch (err) {
       const message = err.response?.data?.error || 'Failed to update task status';
       setError(message);
-      toast.error(message);
+      addToast({ title: "Error", description: message, color: "danger", timeout: 5000 });
       return { success: false, error: message };
     } finally {
       setLoading(false);
@@ -83,7 +83,7 @@ const useTask = () => {
     } catch (err) {
       const message = err.response?.data?.error || 'Failed to fetch tasks';
       setError(message);
-      toast.error(message);
+      addToast({ title: "Error", description: message, color: "danger", timeout: 5000 });
       return { success: false, error: message };
     } finally {
       setLoading(false);

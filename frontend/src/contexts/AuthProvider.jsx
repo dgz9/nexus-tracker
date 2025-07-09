@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import toast from 'react-hot-toast';
+import { addToast } from '@heroui/react';
 import { AuthContext } from './AuthContext';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
@@ -49,11 +49,11 @@ export default function AuthProvider({ children }) {
       localStorage.setItem('token', token);
       setUser(user);
       
-      toast.success('Logged in successfully!');
+      addToast({ title: "Success", description: "Logged in successfully!", color: "success", timeout: 5000 });
       return { success: true };
     } catch (error) {
       const message = error.response?.data?.error || 'Login failed';
-      toast.error(message);
+      addToast({ title: "Error", description: message, color: "danger", timeout: 5000 });
       return { success: false, error: message };
     }
   };
@@ -66,11 +66,11 @@ export default function AuthProvider({ children }) {
       localStorage.setItem('token', token);
       setUser(user);
       
-      toast.success('Account created successfully!');
+      addToast({ title: "Success", description: "Account created successfully!", color: "success", timeout: 5000 });
       return { success: true };
     } catch (error) {
       const message = error.response?.data?.error || 'Registration failed';
-      toast.error(message);
+      addToast({ title: "Error", description: message, color: "danger", timeout: 5000 });
       return { success: false, error: message };
     }
   };
@@ -78,7 +78,7 @@ export default function AuthProvider({ children }) {
   const logout = () => {
     localStorage.removeItem('token');
     setUser(null);
-    toast.success('Logged out successfully');
+    addToast({ title: "Success", description: "Logged out successfully", color: "success", timeout: 5000 });
   };
 
   const updateUser = (updatedUser) => {

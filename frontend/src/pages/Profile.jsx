@@ -12,7 +12,8 @@ import {
   Tabs,
   Select,
   SelectItem,
-  Badge
+  Badge,
+  addToast
 } from '@heroui/react';
 import { motion } from 'framer-motion';
 import { 
@@ -29,7 +30,6 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../contexts/useAuth';
 import { useTheme } from '../contexts/useTheme';
-import toast from 'react-hot-toast';
 import axios from 'axios';
 import AppNavbar from '../components/AppNavbar';
 
@@ -100,12 +100,12 @@ const Profile = () => {
       
       updateUser(response.data);
       
-      toast.success('Profile updated successfully');
+      addToast({ title: "Success", description: "Profile updated successfully", color: "success", timeout: 5000 });
     } catch (error) {
       if (error.response?.data?.message) {
-        toast.error(error.response.data.message);
+        addToast({ title: "Error", description: error.response.data.message, color: "danger", timeout: 5000 });
       } else {
-        toast.error('Failed to update profile');
+        addToast({ title: "Error", description: "Failed to update profile", color: "danger", timeout: 5000 });
       }
     } finally {
       setLoading(false);
@@ -146,7 +146,7 @@ const Profile = () => {
         newPassword: passwordData.newPassword
       });
       
-      toast.success('Password updated successfully');
+      addToast({ title: "Success", description: "Password updated successfully", color: "success", timeout: 5000 });
       
       setPasswordData({
         currentPassword: '',
@@ -158,9 +158,9 @@ const Profile = () => {
       if (error.response?.status === 401) {
         setPasswordErrors({ currentPassword: 'Incorrect current password' });
       } else if (error.response?.data?.message) {
-        toast.error(error.response.data.message);
+        addToast({ title: "Error", description: error.response.data.message, color: "danger", timeout: 5000 });
       } else {
-        toast.error('Failed to update password');
+        addToast({ title: "Error", description: "Failed to update password", color: "danger", timeout: 5000 });
       }
     } finally {
       setLoading(false);

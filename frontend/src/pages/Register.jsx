@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Button, Input, Card, CardBody, Divider, Checkbox } from '@heroui/react';
+import { Button, Input, Card, CardBody, Divider, Checkbox, addToast, Progress } from '@heroui/react';
 import { motion } from 'framer-motion';
-import { Mail, Lock, User, Target, Eye, EyeOff, ArrowRight, Home } from 'lucide-react';
+import { Mail, Lock, User, Target, Eye, EyeOff, ArrowRight, Home, Check, X } from 'lucide-react';
 import { useAuth } from '../contexts/useAuth';
-import toast from 'react-hot-toast';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -18,32 +17,59 @@ const Register = () => {
     confirmPassword: ''
   });
   const [errors, setErrors] = useState({});
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
+
+  const validateField = (field, value) => {
+    switch (field) {
+      case 'name':
+        if (!value) return 'Name is required';
+        if (value.length < 2) return 'Name must be at least 2 characters';
+        if (value.length > 50) return 'Name must be less than 50 characters';
+        return '';
+      
+      case 'email':
+        if (!value) return 'Email is required';
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+          return 'Please enter a valid email (e.g., user@example.com)';
+        }
+        return '';
+      
+      case 'password':
+        if (!value) return 'Password is required';
+        if (value.length < 8) return 'Password must be at least 8 characters';
+        if (!/[A-Z]/.test(value)) return 'Password must contain at least one uppercase letter';
+        if (!/[a-z]/.test(value)) return 'Password must contain at least one lowercase letter';
+        if (!/\d/.test(value)) return 'Password must contain at least one number';
+        if (!/[!@#$%^&*(),.?":{}|<>]/.test(value)) return 'Password must contain at least one special character';
+        return '';
+      
+      case 'confirmPassword':
+        if (!value) return 'Please confirm your password';
+        if (value !== formData.password) return 'Passwords do not match';
+        return '';
+      
+      default:
+        return '';
+    }
+  };
 
   const validateForm = () => {
     const newErrors = {};
     
-    if (!formData.name) {
-      newErrors.name = 'Name is required';
-    } else if (formData.name.length < 2) {
-      newErrors.name = 'Name must be at least 2 characters';
-    }
+    const nameError = validateField('name', formData.name);
+    if (nameError) newErrors.name = nameError;
     
-    if (!formData.email) {
-      newErrors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email';
-    }
+    const emailError = validateField('email', formData.email);
+    if (emailError) newErrors.email = emailError;
     
-    if (!formData.password) {
-      newErrors.password = 'Password is required';
-    } else if (formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
-    }
+    const passwordError = validateField('password', formData.password);
+    if (passwordError) newErrors.password = passwordError;
     
-    if (!formData.confirmPassword) {
-      newErrors.confirmPassword = 'Please confirm your password';
-    } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match';
+    const confirmPasswordError = validateField('confirmPassword', formData.confirmPassword);
+    if (confirmPasswordError) newErrors.confirmPassword = confirmPasswordError;
+    
+    if (!agreedToTerms) {
+      newErrors.terms = 'You must agree to the terms and conditions';
     }
     
     setErrors(newErrors);
@@ -54,6 +80,12 @@ const Register = () => {
     e.preventDefault();
     
     if (!validateForm()) {
+      addToast({
+        title: "Validation Error",
+        description: "Please fix the errors in the form",
+        color: "danger",
+        timeout: 5000,
+      });
       return;
     }
     
@@ -62,7 +94,6 @@ const Register = () => {
     const result = await register(formData.name, formData.email, formData.password);
     
     if (result.success) {
-      toast.success('Account created successfully!');
       navigate('/dashboard');
     }
     
@@ -70,6 +101,25 @@ const Register = () => {
   };
 
   const toggleVisibility = () => setIsVisible(!isVisible);
+
+  const getPasswordStrength = (password) => {
+    if (!password) return { strength: 0, label: '', color: 'default' };
+    
+    let strength = 0;
+    if (password.length >= 8) strength += 20;
+    if (password.length >= 12) strength += 10;
+    if (/[a-z]/.test(password)) strength += 20;
+    if (/[A-Z]/.test(password)) strength += 20;
+    if (/\d/.test(password)) strength += 20;
+    if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) strength += 10;
+    
+    if (strength <= 30) return { strength, label: 'Weak', color: 'danger' };
+    if (strength <= 60) return { strength, label: 'Fair', color: 'warning' };
+    if (strength <= 80) return { strength, label: 'Good', color: 'primary' };
+    return { strength, label: 'Strong', color: 'success' };
+  };
+
+  const passwordStrength = getPasswordStrength(formData.password);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-white to-blue-50/30 dark:from-gray-900 dark:via-gray-950 dark:to-blue-950/20 p-4 relative overflow-hidden">
@@ -113,8 +163,10 @@ const Register = () => {
               placeholder="Enter your name"
               value={formData.name}
               onChange={(e) => {
-                setFormData({ ...formData, name: e.target.value });
-                if (errors.name) setErrors({ ...errors, name: '' });
+                const value = e.target.value;
+                setFormData({ ...formData, name: value });
+                const error = validateField('name', value);
+                setErrors({ ...errors, name: error });
               }}
               startContent={
                 <User className="text-xl text-default-400 pointer-events-none flex-shrink-0" />
@@ -132,8 +184,10 @@ const Register = () => {
               placeholder="Enter your email"
               value={formData.email}
               onChange={(e) => {
-                setFormData({ ...formData, email: e.target.value });
-                if (errors.email) setErrors({ ...errors, email: '' });
+                const value = e.target.value;
+                setFormData({ ...formData, email: value });
+                const error = validateField('email', value);
+                setErrors({ ...errors, email: error });
               }}
               startContent={
                 <Mail className="text-xl text-default-400 pointer-events-none flex-shrink-0" />
@@ -150,8 +204,15 @@ const Register = () => {
               placeholder="Create a password"
               value={formData.password}
               onChange={(e) => {
-                setFormData({ ...formData, password: e.target.value });
-                if (errors.password) setErrors({ ...errors, password: '' });
+                const value = e.target.value;
+                setFormData({ ...formData, password: value });
+                const error = validateField('password', value);
+                setErrors({ ...errors, password: error });
+                // Also revalidate confirm password if it has a value
+                if (formData.confirmPassword) {
+                  const confirmError = validateField('confirmPassword', formData.confirmPassword);
+                  setErrors(prev => ({ ...prev, password: error, confirmPassword: confirmError }));
+                }
               }}
               startContent={
                 <Lock className="text-xl text-default-400 pointer-events-none flex-shrink-0" />
@@ -174,17 +235,74 @@ const Register = () => {
               isRequired
               isInvalid={!!errors.password}
               errorMessage={errors.password}
-              description="Must be at least 6 characters"
               className="max-w-full"
             />
+            
+            {formData.password && (
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-gray-600 dark:text-gray-400">Password strength:</span>
+                  <span className={`font-medium text-${passwordStrength.color}`}>
+                    {passwordStrength.label}
+                  </span>
+                </div>
+                <Progress 
+                  value={passwordStrength.strength} 
+                  color={passwordStrength.color}
+                  size="sm"
+                  className="max-w-full"
+                  aria-label="Password strength indicator"
+                />
+                <div className="space-y-1 text-xs">
+                  <div className="flex items-center gap-2">
+                    {formData.password.length >= 8 ? 
+                      <Check className="w-3 h-3 text-success" /> : 
+                      <X className="w-3 h-3 text-danger" />
+                    }
+                    <span className={formData.password.length >= 8 ? "text-success" : "text-gray-500"}>
+                      At least 8 characters
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {/[A-Z]/.test(formData.password) && /[a-z]/.test(formData.password) ? 
+                      <Check className="w-3 h-3 text-success" /> : 
+                      <X className="w-3 h-3 text-danger" />
+                    }
+                    <span className={/[A-Z]/.test(formData.password) && /[a-z]/.test(formData.password) ? "text-success" : "text-gray-500"}>
+                      Uppercase and lowercase letters
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {/\d/.test(formData.password) ? 
+                      <Check className="w-3 h-3 text-success" /> : 
+                      <X className="w-3 h-3 text-danger" />
+                    }
+                    <span className={/\d/.test(formData.password) ? "text-success" : "text-gray-500"}>
+                      At least one number
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {/[!@#$%^&*(),.?":{}|<>]/.test(formData.password) ? 
+                      <Check className="w-3 h-3 text-success" /> : 
+                      <X className="w-3 h-3 text-danger" />
+                    }
+                    <span className={/[!@#$%^&*(),.?":{}|<>]/.test(formData.password) ? "text-success" : "text-gray-500"}>
+                      Special character (!@#$%^&*)
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
 
             <Input
               label="Confirm Password"
               placeholder="Confirm your password"
               value={formData.confirmPassword}
               onChange={(e) => {
-                setFormData({ ...formData, confirmPassword: e.target.value });
-                if (errors.confirmPassword) setErrors({ ...errors, confirmPassword: '' });
+                const value = e.target.value;
+                setFormData({ ...formData, confirmPassword: value });
+                const error = validateField('confirmPassword', value);
+                setErrors({ ...errors, confirmPassword: error });
               }}
               startContent={
                 <Lock className="text-xl text-default-400 pointer-events-none flex-shrink-0" />
@@ -197,18 +315,30 @@ const Register = () => {
               className="max-w-full"
             />
 
-            <Checkbox size="sm" isRequired className="text-sm">
-              <span className="text-gray-600 dark:text-gray-400">
-                I agree to the{' '}
-                <Link to="/terms" className="text-blue-600 hover:text-blue-700 transition-colors">
-                  Terms and Conditions
-                </Link>{' '}
-                and{' '}
-                <Link to="/privacy" className="text-blue-600 hover:text-blue-700 transition-colors">
-                  Privacy Policy
-                </Link>
-              </span>
-            </Checkbox>
+            <div>
+              <Checkbox 
+                size="sm" 
+                isRequired 
+                className="text-sm"
+                isSelected={agreedToTerms}
+                onValueChange={setAgreedToTerms}
+                isInvalid={!!errors.terms}
+              >
+                <span className="text-gray-600 dark:text-gray-400">
+                  I agree to the{' '}
+                  <Link to="/terms" className="text-blue-600 hover:text-blue-700 transition-colors">
+                    Terms and Conditions
+                  </Link>{' '}
+                  and{' '}
+                  <Link to="/privacy" className="text-blue-600 hover:text-blue-700 transition-colors">
+                    Privacy Policy
+                  </Link>
+                </span>
+              </Checkbox>
+              {errors.terms && (
+                <p className="text-danger text-xs mt-1">{errors.terms}</p>
+              )}
+            </div>
 
             <Button
               type="submit"
