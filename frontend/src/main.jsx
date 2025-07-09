@@ -6,7 +6,6 @@ import './index.css'
 import App from './App.jsx'
 import AuthProvider from './contexts/AuthProvider'
 import { ThemeProvider } from './contexts/ThemeProvider'
-import { Analytics } from "@vercel/analytics/react"
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -15,7 +14,6 @@ createRoot(document.getElementById('root')).render(
         <ToastProvider placement="top-center" />
         <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
           <AuthProvider>
-            <Analytics />
             <App />
           </AuthProvider>
         </BrowserRouter>
