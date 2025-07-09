@@ -208,7 +208,6 @@ const Register = () => {
                 setFormData({ ...formData, password: value });
                 const error = validateField('password', value);
                 setErrors({ ...errors, password: error });
-                // Also revalidate confirm password if it has a value
                 if (formData.confirmPassword) {
                   const confirmError = validateField('confirmPassword', formData.confirmPassword);
                   setErrors(prev => ({ ...prev, password: error, confirmPassword: confirmError }));

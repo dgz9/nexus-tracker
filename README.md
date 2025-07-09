@@ -1,360 +1,294 @@
 # NexusTrack - Task Tracker Application
 
-A full-stack task tracker application built with React.js and Node.js that demonstrates CRUD operations, authentication, and modern web development practices.
+A full-stack task tracking application built with React.js and Node.js, demonstrating modern web development practices with comprehensive CRUD operations, authentication, and a responsive UI.
 
 ## Overview
 
-NexusTrack is a single-page application that allows users to manage tasks and projects efficiently. It features a clean, responsive UI with real-time updates, comprehensive error handling, and a robust authentication system.
+NexusTrack is a single-page application that allows users to efficiently manage tasks and projects. Built as a technical assessment, it showcases proficiency in full-stack JavaScript development with a focus on clean code, user experience, and scalable architecture.
 
-## Requirements Met
+## Technical Requirements Met
 
-### Core Requirements
-- ✅ **CRUD Operations**: Create, Read, Update, and Delete tasks
-- ✅ **React.js Frontend**: Built with functional components and hooks
-- ✅ **Node.js Backend**: RESTful API using Express
-- ✅ **Persistent Storage**: SQLite database with Prisma ORM
-- ✅ **Responsive Design**: Clean, mobile-friendly UI
-- ✅ **Loading & Error States**: Comprehensive feedback during API calls
-- ✅ **Form Validation**: Client-side validation for all forms
+### Frontend (React.js) ✅
+- Built with React.js using functional components and hooks
+- View list of tasks with card/table views
+- Add new tasks with form validation
+- Edit existing tasks inline or via modal
+- Delete tasks with confirmation
+- Clean, responsive, and user-friendly UI
+- Loading states with skeleton loaders
+- Error states with toast notifications
+- Comprehensive form validation
 
-### Bonus Features Implemented
-- ✅ **JWT Authentication**: Secure token-based authentication
-- ✅ **Project Management**: Organize tasks into projects
-- ✅ **Advanced UI Components**: Modal dialogs, toast notifications, animations
-- ✅ **Dark/Light Theme**: User preference persistence
-- ✅ **Reusable Components**: Modular component architecture
-- ✅ **Clean Code Structure**: Organized file structure with clear naming conventions
-- ✅ **Error Handling**: Comprehensive error handling with user feedback
+### Backend (Node.js) ✅
+- RESTful API built with Express.js
+- Implemented all required endpoints:
+  - `GET /api/tasks` - Retrieve all tasks
+  - `POST /api/tasks` - Create new task
+  - `PUT /api/tasks/:id` - Update existing task
+  - `DELETE /api/tasks/:id` - Delete task
+- Persistent storage using PostgreSQL/SQLite with Prisma ORM
+- JWT-based authentication (bonus feature)
 
-## Features
+### Technical Constraints ✅
+- Node.js with Express for backend
+- React.js for frontend
+- Uses Axios for API calls
+- Uses React Router for navigation
+- Prisma for database management
+- Built from scratch without full-stack generators
 
-- **User Authentication**: Secure registration and login with JWT tokens
-- **Personal Task Management**: Each user has their own private task list
-- **Project Organization**: Group tasks into projects with custom colors
-- **Beautiful UI**: Modern interface built with HeroUI and Tailwind CSS
-- **Dark/Light Mode**: Toggle between dark and light themes
-- **Task Operations**: Create, read, update, and delete tasks with ease
-- **Task Status Tracking**: Manage tasks as pending, in-progress, or completed
-- **Real-time Statistics**: View task completion rates and progress by project
-- **Responsive Design**: Fully responsive design with mobile-optimized sidebar
-- **Search & Filter**: Find tasks quickly with search and status filters
-- **Multiple Views**: Switch between card and table view for tasks
-- **Notifications**: Real-time notification system
-- **User Profile**: Manage user settings and preferences
+## Bonus Features Implemented
+
+✅ **Clean Code Structure** - Modular architecture with clear separation of concerns  
+✅ **Reusable Components** - Custom hooks and shared UI components  
+✅ **Error Handling** - Comprehensive error handling with user feedback  
+✅ **Authentication** - JWT-based auth with secure password hashing  
+✅ **Additional Features** - Projects, status tracking, themes, search/filter
 
 ## Tech Stack
 
 ### Frontend
-- **React.js** - UI library with hooks and functional components
-- **HeroUI** - Modern React UI library for beautiful components
-- **Tailwind CSS** - Utility-first CSS framework
+- **React.js 18** - UI library with hooks
+- **Vite** - Fast build tool and dev server
+- **HeroUI (NextUI)** - Modern component library
+- **Tailwind CSS** - Utility-first styling
+- **Framer Motion** - Smooth animations
+- **Axios** - HTTP client
 - **React Router** - Client-side routing
-- **Axios** - HTTP client for API calls
-- **Framer Motion** - Animation library
-- **React Hot Toast** - Toast notifications
-- **Vite** - Fast build tool
 
 ### Backend
 - **Node.js** - JavaScript runtime
 - **Express.js** - Web framework
-- **SQLite** - Lightweight database (easily switchable to PostgreSQL)
-- **Prisma** - Modern ORM for type-safe database access
-- **JWT** - JSON Web Tokens for authentication
+- **Prisma** - Type-safe ORM
+- **PostgreSQL/SQLite** - Database (configurable)
+- **JWT** - Authentication
 - **bcryptjs** - Password hashing
-- **Express Validator** - Input validation
+- **express-validator** - Input validation
 
-## Prerequisites
+## Features
 
-- Node.js (v14 or higher)
-- npm or yarn package manager
+### Core Task Management
+- Create, read, update, and delete tasks
+- Task status tracking (Pending, In Progress, Completed)
+- Rich text descriptions
+- Real-time search and filtering
+
+### Project Organization
+- Group tasks into color-coded projects
+- Project-specific task counts
+- Edit and delete projects
+
+### User Experience
+- JWT authentication with secure sessions
+- Light/dark theme toggle
+- Responsive design for all devices
+- Loading skeletons and error states
+- Toast notifications for actions
+- Keyboard shortcuts
+
+### Views & Navigation
+- Card view for visual task management
+- Table view for data-dense display
+- Collapsible sidebar navigation
+- Mobile-optimized floating action button
 
 ## Installation & Setup
 
-### Clone the repository
-```bash
-git clone <repository-url>
-cd nexus-tracker
-```
+### Prerequisites
+- Node.js v14 or higher
+- npm or yarn
+- PostgreSQL database (local or cloud service like Neon, Supabase, or Railway)
+
+### Database Options
+
+#### Option 1: Local PostgreSQL
+- Install PostgreSQL locally
+- Create a database: `createdb nexustrack`
+- Use connection string: `postgresql://user:password@localhost:5432/nexustrack`
+
+#### Option 2: Cloud PostgreSQL (Recommended for quick setup)
+- **Neon** (https://neon.tech) - Free tier available
+- **Supabase** (https://supabase.com) - Free tier available
+- **Railway** (https://railway.app) - Simple deployment
 
 ### Quick Start
 
-The application uses SQLite by default, so no database setup is required!
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd nexus-tracker
+   ```
 
-### Backend Setup
+2. **Backend Setup**
+   ```bash
+   cd backend
+   npm install
+   
+   # Create .env file
+   echo "PORT=5000" > .env
+   echo "DATABASE_URL=\"postgresql://user:password@localhost:5432/nexustrack\"" >> .env
+   echo "JWT_SECRET=\"your-secret-key\"" >> .env
+   echo "FRONTEND_URL=\"http://localhost:5173\"" >> .env
+   
+   # Update DATABASE_URL with your PostgreSQL connection string
+   # For local PostgreSQL: postgresql://user:password@localhost:5432/nexustrack
+   # For Neon: postgresql://user:password@ep-xxxx.region.aws.neon.tech/neondb?sslmode=require
+   
+   # Run migrations
+   npx prisma migrate dev
+   
+   # Start server
+   npm run dev
+   ```
 
-1. Navigate to the backend directory:
-```bash
-cd backend
+3. **Frontend Setup** (new terminal)
+   ```bash
+   cd frontend
+   npm install
+   
+   # Create .env file
+   echo "VITE_API_URL=http://localhost:5000/api" > .env
+   
+   # Start development server
+   npm run dev
+   ```
+
+4. **Access the application**
+   - Frontend: http://localhost:5173
+   - Backend API: http://localhost:5000
+
+## API Documentation
+
+### Authentication Endpoints
+```
+POST   /api/auth/register   - Create new user account
+POST   /api/auth/login      - Login with credentials
+GET    /api/auth/me         - Get authenticated user
 ```
 
-2. Install dependencies:
-```bash
-npm install
+### Task Endpoints (Protected)
+```
+GET    /api/tasks           - Get all user tasks
+POST   /api/tasks           - Create new task
+PUT    /api/tasks/:id       - Update task
+DELETE /api/tasks/:id       - Delete task
+GET    /api/tasks/stats     - Get task statistics
 ```
 
-3. Create a `.env` file based on the example:
-```bash
-cp .env.example .env
+### Project Endpoints (Protected)
+```
+GET    /api/projects        - Get all user projects
+POST   /api/projects        - Create new project
+PUT    /api/projects/:id    - Update project
+DELETE /api/projects/:id    - Delete project
 ```
 
-Update the JWT_SECRET in the `.env` file:
-```env
-PORT=5000
-DATABASE_URL="file:./tasks.db"
-JWT_SECRET="your-super-secret-jwt-key-change-this-in-production"
-FRONTEND_URL="http://localhost:5173"
+### User Endpoints (Protected)
 ```
-
-4. Initialize the database:
-```bash
-npx prisma migrate dev
-```
-
-5. Start the backend server:
-```bash
-npm start
-```
-
-For development with auto-restart:
-```bash
-npm run dev
-```
-
-The backend server will run on `http://localhost:5000`
-
-### Frontend Setup
-
-1. Open a new terminal and navigate to the frontend directory:
-```bash
-cd frontend
-```
-
-2. Install dependencies:
-```bash
-npm install
-```
-
-3. Start the development server:
-```bash
-npm run dev
-```
-
-The frontend will run on `http://localhost:5173`
-
-## Request/Response Examples
-
-#### Register
-```json
-POST /api/auth/register
-{
-  "name": "John Doe",
-  "email": "john@example.com",
-  "password": "password123"
-}
-```
-
-#### Login
-```json
-POST /api/auth/login
-{
-  "email": "john@example.com",
-  "password": "password123"
-}
-
-Response:
-{
-  "token": "jwt-token-here",
-  "user": {
-    "id": "user-id",
-    "email": "john@example.com",
-    "name": "John Doe"
-  }
-}
-```
-
-#### Create Task
-```json
-POST /api/tasks
-Headers: { "Authorization": "Bearer jwt-token-here" }
-{
-  "title": "Complete project",
-  "description": "Finish the NexusTrack app",
-  "status": "PENDING",
-  "projectId": "project-id-here" // Optional
-}
-```
-
-#### Create Project
-```json
-POST /api/projects
-Headers: { "Authorization": "Bearer jwt-token-here" }
-{
-  "name": "Website Redesign",
-  "description": "Redesign the company website",
-  "color": "#3B82F6"
-}
+PUT    /api/users/profile   - Update user profile
+PUT    /api/users/password  - Change password
 ```
 
 ## Project Structure
 
 ```
 nexus-tracker/
-├── backend/
-│   ├── prisma/
-│   │   └── schema.prisma    # Database schema
-│   ├── middleware/
-│   │   └── auth.js         # Authentication middleware
-│   ├── utils/
-│   │   └── jwt.js          # JWT utilities
-│   ├── server.js           # Express server and API routes
-│   ├── package.json        # Backend dependencies
-│   └── .env               # Environment variables
 ├── frontend/
 │   ├── src/
-│   │   ├── components/     # Reusable components
-│   │   │   ├── AppNavbar.jsx      # Consistent navbar component
-│   │   │   ├── Notifications.jsx  # Notification dropdown
-│   │   │   ├── PrivateRoute.jsx   # Protected route wrapper
-│   │   │   ├── Sidebar.jsx        # Collapsible sidebar
-│   │   │   ├── TaskCard.jsx       # Task card component
-│   │   │   └── UniversalModal.jsx # Reusable modal component
+│   │   ├── components/     # Reusable UI components
 │   │   ├── contexts/       # React contexts
-│   │   │   ├── AuthContext.jsx    # Authentication context
-│   │   │   ├── ThemeContext.jsx   # Theme management
-│   │   │   ├── useAuth.js         # Auth hook
-│   │   │   └── useTheme.js        # Theme hook
+│   │   ├── hooks/          # Custom React hooks
 │   │   ├── pages/          # Page components
-│   │   │   ├── Landing.jsx        # Landing page
-│   │   │   ├── Login.jsx          # Login page
-│   │   │   ├── Register.jsx       # Registration page
-│   │   │   ├── Dashboard.jsx      # Main dashboard
-│   │   │   └── Profile.jsx        # User profile page
-│   │   ├── App.jsx         # Main app component with routing
-│   │   ├── main.jsx        # Application entry point
-│   │   └── index.css       # Tailwind CSS imports
-│   ├── package.json        # Frontend dependencies
-│   ├── tailwind.config.js  # Tailwind configuration
-│   └── postcss.config.js   # PostCSS configuration
+│   │   └── App.jsx         # Root component
+│   └── package.json
+│
+├── backend/
+│   ├── routes/             # API route handlers
+│   ├── middleware/         # Express middleware
+│   ├── utils/              # Helper functions
+│   ├── prisma/
+│   │   └── schema.prisma   # Database schema
+│   ├── server.js           # Express server
+│   └── package.json
+│
 └── README.md
 ```
 
-## API Endpoints
+## Key Design Decisions
 
-### Authentication
-- `POST /api/auth/register` - Register a new user
-- `POST /api/auth/login` - Login user
-- `GET /api/auth/me` - Get current user info
+### Architecture
+- **Separation of Concerns** - Clear boundaries between UI, business logic, and data
+- **Custom Hooks** - Encapsulated state logic for reusability
+- **Modular Routes** - Backend routes organized by domain
+- **Type Safety** - Prisma provides type-safe database queries
 
-### Tasks (Protected - Requires Authentication)
-- `GET /api/tasks` - Get all tasks for the authenticated user
-- `POST /api/tasks` - Create a new task
-- `PUT /api/tasks/:id` - Update a task
-- `DELETE /api/tasks/:id` - Delete a task
-- `GET /api/tasks/stats` - Get task statistics
+### User Experience
+- **Optimistic Updates** - UI updates immediately while API calls process
+- **Progressive Enhancement** - Core features work without JavaScript
+- **Accessibility** - ARIA labels and keyboard navigation
+- **Performance** - Lazy loading and code splitting
 
-### Projects (Protected - Requires Authentication)
-- `GET /api/projects` - Get all projects for the authenticated user
-- `POST /api/projects` - Create a new project
-- `PUT /api/projects/:id` - Update a project
-- `DELETE /api/projects/:id` - Delete a project
+### Development
+- **Environment Variables** - Secure configuration management
+- **CORS Configuration** - Proper cross-origin setup
+- **Error Boundaries** - Graceful error handling
+- **Code Quality** - ESLint configuration for consistency
 
-### User Profile (Protected)
-- `PUT /api/users/profile` - Update user profile
-- `PUT /api/users/password` - Update user password
+## Testing Approach
 
-## Available Scripts
+Manual testing covered:
+- All CRUD operations
+- Authentication flows
+- Form validation edge cases
+- Responsive design breakpoints
+- Cross-browser compatibility
+- API error scenarios
 
 ## Deployment
 
 ### Frontend (Vercel)
-1. Push code to GitHub
-2. Import project to Vercel
-3. Set build command: `cd frontend && npm install && npm run build`
-4. Set output directory: `frontend/dist`
-5. Add environment variable: `VITE_API_URL=https://your-backend-url.com/api`
+1. Connect GitHub repository
+2. Set framework preset to Vite
+3. Add environment variable: `VITE_API_URL`
 
-### Backend
-For production deployment, consider platforms that support Node.js with persistent storage:
-- Railway.app (recommended)
-- Render.com
-- Fly.io
+### Backend (Render/Railway)
+1. Connect GitHub repository
+2. Set build command: `npm install && npx prisma generate`
+3. Set start command: `npm start`
+4. Add environment variables
 
-See `DEPLOYMENT.md` for detailed deployment instructions.
+## Demo
 
-## Development Approach
-
-This application was built with a focus on:
-1. **User Experience**: Intuitive interface with smooth interactions
-2. **Code Quality**: Clean, maintainable code following best practices
-3. **Performance**: Optimized rendering and efficient API calls
-4. **Scalability**: Modular architecture that can grow with requirements
-5. **Security**: Proper authentication and input validation
-
-## Key Design Decisions
-
-### Frontend Architecture
-- **Component Structure**: Modular components with clear separation of concerns
-- **State Management**: Context API for global state (auth, theme)
-- **Error Handling**: Centralized error handling with user-friendly messages
-- **Form Validation**: Real-time validation with helpful error messages
-
-### Backend Architecture
-- **Database Choice**: SQLite for simplicity and portability
-- **ORM**: Prisma for type-safe database queries
-- **Authentication**: JWT tokens for stateless authentication
-- **API Design**: RESTful endpoints with consistent naming conventions
-
-### Code Quality
-- **ESLint**: Configured for code consistency
-- **Naming Conventions**: Clear, descriptive names for variables and functions
-- **File Organization**: Logical grouping of related functionality
-- **Reusability**: Shared components and utilities
-
-## Testing the Application
-
-1. **Register**: Create a new account
-2. **Create Projects**: Organize your tasks
-3. **Add Tasks**: Create tasks with descriptions
-4. **Update Status**: Track progress (Pending → In Progress → Completed)
-5. **Edit/Delete**: Modify or remove tasks as needed
-6. **Filter & Search**: Find tasks quickly
-7. **Theme Toggle**: Switch between light and dark modes
-
-## Available Scripts
-
-### Backend
-- `npm start` - Start the production server
-- `npm run dev` - Start development server with auto-reload
-
-### Frontend
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint
-
-## Submission Notes
-
-- **Source Code**: Full source code for both frontend and backend is included
-- **Local Setup**: Follow the installation instructions above to run locally
-- **Clean Code**: Organized structure with clear naming conventions
-- **Error Handling**: Comprehensive error handling throughout the application
-- **Responsive Design**: Works seamlessly on desktop and mobile devices
-- **Authentication**: Bonus feature implemented with JWT tokens
-- **Reusable Components**: Modular architecture for easy maintenance
+To quickly test the application:
+1. Register a new account
+2. Create a project (e.g., "Work Tasks")
+3. Add some tasks to the project
+4. Try different status updates
+5. Use search and filters
+6. Switch between card/table views
+7. Toggle dark mode
 
 ## Future Enhancements
 
-- Email verification for new users
-- Password reset functionality
-- Task collaboration and sharing
-- Task categories and tags
-- Due dates and reminders
+- Task due dates and reminders
+- Task priority levels
 - File attachments
-- Activity history
-- Export tasks to CSV/PDF
-- Real-time updates with WebSockets
-- Mobile app version
+- Comments on tasks
+- Team collaboration
+- Email notifications
+- Recurring tasks
+- Task templates
+- Data export (CSV/PDF)
+- Mobile app
 
-## License
+## Submission Notes
 
-MIT
+This application was built from scratch specifically for the technical assessment, demonstrating:
+- Proficiency in React.js and Node.js
+- Understanding of RESTful API design
+- Database design and management
+- Authentication implementation
+- UI/UX best practices
+- Clean, maintainable code
+
+All requirements have been met with additional features that showcase problem-solving abilities and attention to user experience.

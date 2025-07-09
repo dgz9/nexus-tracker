@@ -23,7 +23,7 @@ import useResponsive from '../hooks/useResponsive';
 
 const Sidebar = ({
   projects,
-  stats,
+  totalTaskCount,
   projectFilter,
   onProjectFilterChange,
   onEditProject,
@@ -146,7 +146,7 @@ const Sidebar = ({
                         <Hash className="w-4 h-4 text-gray-700 dark:text-gray-300" />
                       </div>
                       <span className="font-medium flex-1 text-left truncate">All Tasks</span>
-                      <Chip size="sm" variant="flat">{stats?.total || 0}</Chip>
+                      <Chip size="sm" variant="flat">{totalTaskCount || 0}</Chip>
                     </div>
                   )}
                 </Button>

@@ -80,6 +80,7 @@ const Dashboard = () => {
   const projectModal = useModal();
   const [projectFilter, setProjectFilter] = useState('all');
   const [stats, setStats] = useState(null);
+  const [totalTaskCount, setTotalTaskCount] = useState(0);
   const [taskFormData, setTaskFormData] = useState({
     title: '',
     description: '',
@@ -98,6 +99,7 @@ const Dashboard = () => {
   const [fabMenuOpen, { toggle: toggleFabMenu, setFalse: closeFabMenu }] = useToggle(false);
   const taskDetailsModal = useModal();
   const deleteTaskModal = useModal();
+  const deleteProjectModal = useModal();
   const [sidebarState, setSidebarState] = useState(() => {
     return window.innerWidth >= 1024 ? 'full' : 'hidden';
   });
@@ -134,6 +136,7 @@ const Dashboard = () => {
     fetchTasks();
     fetchProjects();
     fetchStats();
+    fetchTotalTaskCount();
   }, []);
 
   const { 
@@ -173,6 +176,15 @@ const Dashboard = () => {
     }
   };
 
+  const fetchTotalTaskCount = async () => {
+    try {
+      const response = await axios.get('/tasks/stats');
+      setTotalTaskCount(response.data.total || 0);
+    } catch {
+      console.error('Failed to fetch total task count');
+    }
+  };
+
   const handleTaskSubmit = async () => {
     if (!taskFormData.title.trim()) {
       addToast({ title: "Error", description: "Task title is required", color: "danger", timeout: 5000 });
@@ -194,7 +206,9 @@ const Dashboard = () => {
       } else {
         result = await createTask(taskFormData);
         if (result.success) {
-          setTasks([result.data, ...tasks]);
+          if (projectFilter === 'all' || taskFormData.projectId === projectFilter) {
+            setTasks([result.data, ...tasks]);
+          }
         }
       }
       
@@ -203,6 +217,7 @@ const Dashboard = () => {
         resetTaskForm();
         fetchStats(projectFilter !== 'all' ? projectFilter : null);
         fetchProjects();
+        fetchTotalTaskCount();
       }
     } finally {
       setSubmitting(false);
@@ -269,6 +284,7 @@ const Dashboard = () => {
 
       fetchStats(projectFilter !== 'all' ? projectFilter : null);
       fetchProjects();
+      fetchTotalTaskCount();
       deleteTaskModal.close();
     }
   };
@@ -290,6 +306,7 @@ const Dashboard = () => {
 
       fetchStats(projectFilter !== 'all' ? projectFilter : null);
       fetchProjects();
+      fetchTotalTaskCount();
     }
   };
 
@@ -313,7 +330,12 @@ const Dashboard = () => {
   };
 
   const resetTaskForm = () => {
-    setTaskFormData({ title: '', description: '', status: 'PENDING', projectId: null });
+    setTaskFormData({ 
+      title: '', 
+      description: '', 
+      status: 'PENDING', 
+      projectId: projectFilter !== 'all' ? projectFilter : null 
+    });
   };
 
   const resetProjectForm = () => {
@@ -361,6 +383,27 @@ const Dashboard = () => {
 
   const confirmDelete = (task) => {
     deleteTaskModal.open(task);
+  };
+
+  const confirmDeleteProject = (project) => {
+    deleteProjectModal.open(project);
+  };
+
+  const handleDeleteProject = async (project) => {
+    try {
+      await axios.delete(`/projects/${project.id}`);
+      setProjects(projects.filter(p => p.id !== project.id));
+      addToast({ title: "Success", description: "Project deleted successfully", color: "success", timeout: 5000 });
+      if (projectFilter === project.id) {
+        handleProjectFilterChange('all');
+      } else {
+        fetchStats(projectFilter !== 'all' ? projectFilter : null);
+      }
+      fetchTotalTaskCount();
+      deleteProjectModal.close();
+    } catch {
+      addToast({ title: "Error", description: "Failed to delete project", color: "danger", timeout: 5000 });
+    }
   };
 
   const handleViewTaskDetails = (task) => {
@@ -412,23 +455,11 @@ const Dashboard = () => {
       <Sidebar
         projects={projects}
         stats={stats}
+        totalTaskCount={totalTaskCount}
         projectFilter={projectFilter}
         onProjectFilterChange={handleProjectFilterChange}
         onEditProject={handleEditProject}
-        onDeleteProject={async (project) => {
-          try {
-            await axios.delete(`/projects/${project.id}`);
-            setProjects(projects.filter(p => p.id !== project.id));
-            addToast({ title: "Success", description: "Project deleted", color: "success", timeout: 5000 });
-            if (projectFilter === project.id) {
-              handleProjectFilterChange('all');
-            } else {
-              fetchStats(projectFilter !== 'all' ? projectFilter : null);
-            }
-          } catch {
-            addToast({ title: "Error", description: "Failed to delete project", color: "danger", timeout: 5000 });
-          }
-        }}
+        onDeleteProject={confirmDeleteProject}
         onNewProject={() => {
           resetProjectForm();
           projectModal.open();
@@ -1251,6 +1282,30 @@ const Dashboard = () => {
         }}
       >
         <p>Are you sure you want to delete "{deleteTaskModal.data?.title}"? This action cannot be undone.</p>
+      </UniversalModal>
+
+      <UniversalModal
+        isOpen={deleteProjectModal.isOpen}
+        onClose={deleteProjectModal.close}
+        title="Delete Project"
+        size="md"
+        primaryAction={{
+          label: 'Delete',
+          color: 'danger',
+          onClick: () => deleteProjectModal.data && handleDeleteProject(deleteProjectModal.data)
+        }}
+        secondaryAction={{
+          label: 'Cancel'
+        }}
+      >
+        <div className="space-y-4">
+          <p>Are you sure you want to delete the project "{deleteProjectModal.data?.name}"?</p>
+          <div className="bg-warning-50 dark:bg-warning-900/20 border border-warning-200 dark:border-warning-800 rounded-lg p-4">
+            <p className="text-sm text-warning-700 dark:text-warning-300">
+              <strong>Warning:</strong> This will permanently delete the project and all {deleteProjectModal.data?._count?.tasks || 0} associated tasks. This action cannot be undone.
+            </p>
+          </div>
+        </div>
       </UniversalModal>
 
       <TaskDetailsModal
