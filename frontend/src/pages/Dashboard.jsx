@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import useTask from '../hooks/useTask';
+import SEO from '../components/SEO';
 import {
   Card,
   Button,
@@ -443,6 +444,11 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-gray-50 to-blue-50/30 dark:from-gray-900 dark:via-gray-900 dark:to-blue-950/20 flex overflow-x-hidden">
+      <SEO 
+        title="Dashboard"
+        description="Manage your tasks and projects efficiently with NexusTrack dashboard. View tasks, track progress, and collaborate with your team."
+        keywords="task dashboard, project dashboard, task management dashboard, NexusTrack dashboard"
+      />
       <AppNavbar
         onSearchChange={setSearchQuery}
         searchQuery={searchQuery}

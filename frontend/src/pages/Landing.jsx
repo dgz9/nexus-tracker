@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import AppNavbar from '../components/AppNavbar';
 import { useAuth } from '../contexts/useAuth';
+import SEO from '../components/SEO';
 
 const Landing = () => {
   const { user } = useAuth();
@@ -50,6 +51,11 @@ const Landing = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <SEO 
+        title="NexusTrack - Task Management Made Simple | Free Project Tracker"
+        description="Transform your workflow with NexusTrack's powerful task management. Free forever, open source, beautiful UI. Organize projects, collaborate with teams, and boost productivity."
+        keywords="task management, project management, free task tracker, team collaboration, productivity tool, workflow management, NexusTrack, open source project management"
+      />
       <AppNavbar />
 
       <section className="pt-24 pb-20 px-4">

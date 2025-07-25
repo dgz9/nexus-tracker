@@ -1,0 +1,43 @@
+# NexusTrack Robots.txt
+# Allow all web crawlers access to all content
+
+User-agent: *
+Allow: /
+Sitemap: https://nexustracker.com/sitemap.xml
+
+# Common crawler directives
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 0
+
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 0
+
+# Disallow access to API endpoints
+User-agent: *
+Disallow: /api/
+
+# Disallow access to admin areas (if any)
+User-agent: *
+Disallow: /admin/
+
+# Allow access to static assets
+User-agent: *
+Allow: /assets/
+Allow: /*.js
+Allow: /*.css
+Allow: /*.png
+Allow: /*.jpg
+Allow: /*.jpeg
+Allow: /*.gif
+Allow: /*.svg
+Allow: /*.ico

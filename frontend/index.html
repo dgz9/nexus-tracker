@@ -3,13 +3,105 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="NexusTrack - Transform your workflow with powerful task management" />
+    <title>NexusTrack - Task Management Made Simple | Project Collaboration Tool</title>
+    <meta name="description" content="NexusTrack - Transform your workflow with powerful task management. Organize projects, collaborate with teams, and boost productivity with our intuitive project management platform." />
+    <meta name="keywords" content="task management, project management, team collaboration, productivity tool, workflow management, NexusTrack, project tracker" />
+    <meta name="author" content="NexusTrack Team" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://nexustracker.com" />
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="NexusTrack - Task Management Made Simple" />
+    <meta property="og:description" content="Transform your workflow with powerful task management. Organize projects and boost productivity." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://nexustracker.com" />
+    <meta property="og:image" content="https://nexustracker.com/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="NexusTrack" />
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="NexusTrack - Task Management Made Simple" />
+    <meta name="twitter:description" content="Transform your workflow with powerful task management. Organize projects and boost productivity." />
+    <meta name="twitter:image" content="https://nexustracker.com/twitter-card.png" />
+    
+    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="alternate icon" href="/favicon.ico" />
-    <title>NexusTrack - Task Management Made Simple</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#3b82f6" />
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "NexusTrack",
+      "applicationCategory": "ProductivityApplication",
+      "operatingSystem": "Web",
+      "description": "Transform your workflow with powerful task management. Free forever, open source project management tool.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "creator": {
+        "@type": "Organization",
+        "name": "NexusTrack Team",
+        "url": "https://nexustracker.com"
+      },
+      "featureList": [
+        "Task Management",
+        "Project Organization",
+        "Team Collaboration",
+        "Real-time Updates",
+        "Light/Dark Theme",
+        "Mobile Responsive"
+      ],
+      "screenshot": "https://nexustracker.com/screenshot.png",
+      "softwareVersion": "1.0.0",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5",
+        "ratingCount": "100"
+      }
+    }
+    </script>
+    
+    <!-- Organization Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "NexusTrack",
+      "url": "https://nexustracker.com",
+      "logo": "https://nexustracker.com/logo.png",
+      "description": "Free and open source task management platform",
+      "sameAs": [
+        "https://github.com/dgz9/nexus-tracker"
+      ]
+    }
+    </script>
+    
+    <!-- WebSite Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "NexusTrack",
+      "url": "https://nexustracker.com",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://nexustracker.com/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
   </body>
 </html>

@@ -4,6 +4,7 @@ import { Button, Input, Card, CardBody, Divider, Checkbox, addToast, Progress } 
 import { motion } from 'framer-motion';
 import { Mail, Lock, User, Target, Eye, EyeOff, ArrowRight, Home, Check, X } from 'lucide-react';
 import { useAuth } from '../contexts/useAuth';
+import SEO from '../components/SEO';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -123,6 +124,11 @@ const Register = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-white to-blue-50/30 dark:from-gray-900 dark:via-gray-950 dark:to-blue-950/20 p-4 relative overflow-hidden">
+      <SEO 
+        title="Register"
+        description="Create a free NexusTrack account to start managing your tasks and projects. No credit card required."
+        keywords="register, sign up, create account, NexusTrack registration, free task management"
+      />
       <Link to="/" className="absolute top-6 left-6 z-20">
         <Button
           variant="light"

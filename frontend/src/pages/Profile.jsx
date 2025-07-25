@@ -32,6 +32,7 @@ import { useAuth } from '../contexts/useAuth';
 import { useTheme } from '../contexts/useTheme';
 import axios from 'axios';
 import AppNavbar from '../components/AppNavbar';
+import SEO from '../components/SEO';
 
 const Profile = () => {
   const { user, updateUser } = useAuth();
@@ -169,6 +170,11 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <SEO 
+        title="Profile Settings"
+        description="Manage your NexusTrack profile, update account settings, and customize your preferences."
+        keywords="profile, account settings, user profile, NexusTrack profile"
+      />
       <AppNavbar />
 
       <div className="w-full px-6 py-8 pt-24">
