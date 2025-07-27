@@ -13,6 +13,7 @@ const corsOptions = {
   origin: function (origin, callback) {
     const allowedOrigins = [
       process.env.FRONTEND_URL,
+      process.env.FRONTEND_URL,
       'http://localhost:5173',
       'http://localhost:5174'
     ].filter(Boolean);
