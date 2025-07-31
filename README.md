@@ -1,294 +1,250 @@
-# NexusTrack - Task Tracker Application
+# Nexus Tracker
 
-A full-stack task tracking application built with React.js and Node.js, demonstrating modern web development practices with comprehensive CRUD operations, authentication, and a responsive UI.
+A modern task management application built with Next.js, featuring project organization, task tracking, and team collaboration capabilities.
 
-## Overview
+## Quick Start
 
-NexusTrack is a single-page application that allows users to efficiently manage tasks and projects. Built as a technical assessment, it showcases proficiency in full-stack JavaScript development with a focus on clean code, user experience, and scalable architecture.
+```bash
+# Clone the repository
+git clone <repository-url>
+cd nexus-tracker
 
-## Technical Requirements Met
+# Install dependencies
+npm install
 
-### Frontend (React.js) ✅
-- Built with React.js using functional components and hooks
-- View list of tasks with card/table views
-- Add new tasks with form validation
-- Edit existing tasks inline or via modal
-- Delete tasks with confirmation
-- Clean, responsive, and user-friendly UI
-- Loading states with skeleton loaders
-- Error states with toast notifications
-- Comprehensive form validation
+# Set up environment variables
+cp .env.example .env.local
+# Edit .env.local with your database credentials
 
-### Backend (Node.js) ✅
-- RESTful API built with Express.js
-- Implemented all required endpoints:
-  - `GET /api/tasks` - Retrieve all tasks
-  - `POST /api/tasks` - Create new task
-  - `PUT /api/tasks/:id` - Update existing task
-  - `DELETE /api/tasks/:id` - Delete task
-- Persistent storage using PostgreSQL/SQLite with Prisma ORM
-- JWT-based authentication (bonus feature)
+# Set up the database
+npx prisma migrate dev
+npx prisma generate
 
-### Technical Constraints ✅
-- Node.js with Express for backend
-- React.js for frontend
-- Uses Axios for API calls
-- Uses React Router for navigation
-- Prisma for database management
-- Built from scratch without full-stack generators
+# Run the development server
+npm run dev
+```
 
-## Bonus Features Implemented
-
-✅ **Clean Code Structure** - Modular architecture with clear separation of concerns  
-✅ **Reusable Components** - Custom hooks and shared UI components  
-✅ **Error Handling** - Comprehensive error handling with user feedback  
-✅ **Authentication** - JWT-based auth with secure password hashing  
-✅ **Additional Features** - Projects, status tracking, themes, search/filter
-
-## Tech Stack
-
-### Frontend
-- **React.js 18** - UI library with hooks
-- **Vite** - Fast build tool and dev server
-- **HeroUI (NextUI)** - Modern component library
-- **Tailwind CSS** - Utility-first styling
-- **Framer Motion** - Smooth animations
-- **Axios** - HTTP client
-- **React Router** - Client-side routing
-
-### Backend
-- **Node.js** - JavaScript runtime
-- **Express.js** - Web framework
-- **Prisma** - Type-safe ORM
-- **PostgreSQL/SQLite** - Database (configurable)
-- **JWT** - Authentication
-- **bcryptjs** - Password hashing
-- **express-validator** - Input validation
+Visit [http://localhost:3000](http://localhost:3000) to see the application.
 
 ## Features
 
-### Core Task Management
-- Create, read, update, and delete tasks
-- Task status tracking (Pending, In Progress, Completed)
-- Rich text descriptions
-- Real-time search and filtering
+- **User Authentication**: Secure JWT-based authentication with registration and login
+- **Project Management**: Create, update, and delete projects with color coding
+- **Task Management**: Comprehensive task tracking with priorities, due dates, and status updates
+- **Dashboard Analytics**: Visual statistics and progress tracking
+- **Responsive Design**: Mobile-friendly interface with collapsible sidebar
+- **Real-time Search**: Filter tasks and projects instantly
+- **Profile Management**: Update user information and change passwords
+- **Dark Mode Support**: Built with modern UI components from HeroUI
 
-### Project Organization
-- Group tasks into color-coded projects
-- Project-specific task counts
-- Edit and delete projects
+## Tech Stack
 
-### User Experience
-- JWT authentication with secure sessions
-- Light/dark theme toggle
-- Responsive design for all devices
-- Loading skeletons and error states
-- Toast notifications for actions
-- Keyboard shortcuts
+- **Frontend**: Next.js 15 (App Router), React 19, HeroUI, Tailwind CSS
+- **Backend**: Next.js API Routes
+- **Database**: PostgreSQL with Prisma ORM
+- **Authentication**: JWT (jsonwebtoken)
+- **Styling**: Tailwind CSS, Framer Motion
+- **Icons**: Lucide React
 
-### Views & Navigation
-- Card view for visual task management
-- Table view for data-dense display
-- Collapsible sidebar navigation
-- Mobile-optimized floating action button
+## Prerequisites
 
-## Installation & Setup
+- Node.js 18.x or higher
+- PostgreSQL database
+- npm or yarn package manager
 
-### Prerequisites
-- Node.js v14 or higher
-- npm or yarn
-- PostgreSQL database (local or cloud service like Neon, Supabase, or Railway)
+## Installation
 
-### Database Options
-
-#### Option 1: Local PostgreSQL
-- Install PostgreSQL locally
-- Create a database: `createdb nexustrack`
-- Use connection string: `postgresql://user:password@localhost:5432/nexustrack`
-
-#### Option 2: Cloud PostgreSQL (Recommended for quick setup)
-- **Neon** (https://neon.tech) - Free tier available
-- **Supabase** (https://supabase.com) - Free tier available
-- **Railway** (https://railway.app) - Simple deployment
-
-### Quick Start
-
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd nexus-tracker
-   ```
-
-2. **Backend Setup**
-   ```bash
-   cd backend
-   npm install
-   
-   # Create .env file
-   echo "PORT=5000" > .env
-   echo "DATABASE_URL=\"postgresql://user:password@localhost:5432/nexustrack\"" >> .env
-   echo "JWT_SECRET=\"your-secret-key\"" >> .env
-   echo "FRONTEND_URL=\"http://localhost:5173\"" >> .env
-   
-   # Update DATABASE_URL with your PostgreSQL connection string
-   # For local PostgreSQL: postgresql://user:password@localhost:5432/nexustrack
-   # For Neon: postgresql://user:password@ep-xxxx.region.aws.neon.tech/neondb?sslmode=require
-   
-   # Run migrations
-   npx prisma migrate dev
-   
-   # Start server
-   npm run dev
-   ```
-
-3. **Frontend Setup** (new terminal)
-   ```bash
-   cd frontend
-   npm install
-   
-   # Create .env file
-   echo "VITE_API_URL=http://localhost:5000/api" > .env
-   
-   # Start development server
-   npm run dev
-   ```
-
-4. **Access the application**
-   - Frontend: http://localhost:5173
-   - Backend API: http://localhost:5000
-
-## API Documentation
-
-### Authentication Endpoints
-```
-POST   /api/auth/register   - Create new user account
-POST   /api/auth/login      - Login with credentials
-GET    /api/auth/me         - Get authenticated user
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd nexus-tracker
 ```
 
-### Task Endpoints (Protected)
-```
-GET    /api/tasks           - Get all user tasks
-POST   /api/tasks           - Create new task
-PUT    /api/tasks/:id       - Update task
-DELETE /api/tasks/:id       - Delete task
-GET    /api/tasks/stats     - Get task statistics
+2. Install dependencies:
+```bash
+npm install
 ```
 
-### Project Endpoints (Protected)
-```
-GET    /api/projects        - Get all user projects
-POST   /api/projects        - Create new project
-PUT    /api/projects/:id    - Update project
-DELETE /api/projects/:id    - Delete project
+3. Set up environment variables:
+```bash
+cp .env.example .env.local
 ```
 
-### User Endpoints (Protected)
+4. Configure your `.env.local` file:
+```env
+# Database
+DATABASE_URL="postgresql://username:password@localhost:5432/nexus_tracker"
+
+# JWT Secret (generate a secure random string)
+JWT_SECRET="your-super-secret-jwt-key-here"
+
+# Next.js
+NEXT_PUBLIC_APP_URL="http://localhost:3000"
 ```
-PUT    /api/users/profile   - Update user profile
-PUT    /api/users/password  - Change password
+
+5. Set up the database:
+```bash
+# Generate Prisma client
+npx prisma generate
+
+# Run database migrations
+npx prisma migrate dev
+
+# (Optional) Seed the database
+npx prisma db seed
 ```
+
+6. Run the development server:
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) to view the application.
+
+## Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm start` - Start production server
+- `npm run lint` - Run ESLint
+- `npm run prisma:generate` - Generate Prisma client
+- `npm run prisma:migrate` - Run database migrations
+- `npm run prisma:studio` - Open Prisma Studio
+
+## API Routes
+
+### Authentication
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - User login
+- `GET /api/auth/me` - Get current user
+
+### Projects
+- `GET /api/projects` - Get all user projects
+- `POST /api/projects` - Create new project
+- `PUT /api/projects/[id]` - Update project
+- `DELETE /api/projects/[id]` - Delete project
+
+### Tasks
+- `GET /api/tasks` - Get all user tasks
+- `POST /api/tasks` - Create new task
+- `PUT /api/tasks/[id]` - Update task
+- `DELETE /api/tasks/[id]` - Delete task
+- `PUT /api/tasks/[id]/status` - Update task status
+- `GET /api/tasks/stats` - Get task statistics
+
+### Users
+- `PUT /api/users/profile` - Update user profile
+- `PUT /api/users/password` - Change password
 
 ## Project Structure
 
 ```
 nexus-tracker/
-├── frontend/
-│   ├── src/
-│   │   ├── components/     # Reusable UI components
-│   │   ├── contexts/       # React contexts
-│   │   ├── hooks/          # Custom React hooks
-│   │   ├── pages/          # Page components
-│   │   └── App.jsx         # Root component
-│   └── package.json
-│
-├── backend/
-│   ├── routes/             # API route handlers
-│   ├── middleware/         # Express middleware
-│   ├── utils/              # Helper functions
-│   ├── prisma/
-│   │   └── schema.prisma   # Database schema
-│   ├── server.js           # Express server
-│   └── package.json
-│
-└── README.md
+├── public/                # Static assets
+│   ├── favicon.svg
+│   ├── manifest.json
+│   ├── robots.txt
+│   └── sitemap.xml
+├── src/
+│   ├── app/              # Next.js App Router
+│   │   ├── (auth)/       # Auth layout group
+│   │   │   ├── login/
+│   │   │   └── register/
+│   │   ├── api/          # API routes
+│   │   ├── dashboard/    # Dashboard page
+│   │   ├── profile/      # Profile page
+│   │   ├── layout.js     # Root layout
+│   │   └── page.js       # Landing page
+│   ├── components/       # React components
+│   │   ├── AppNavbar.jsx
+│   │   ├── DashboardNavbar.jsx
+│   │   ├── Notifications.jsx
+│   │   ├── PrivateRoute.jsx
+│   │   ├── SEO.jsx
+│   │   ├── Sidebar.jsx
+│   │   ├── TaskCard.jsx
+│   │   ├── TaskDetailsModal.jsx
+│   │   └── UniversalModal.jsx
+│   ├── contexts/         # React contexts
+│   │   ├── AuthContext.js
+│   │   ├── AuthProvider.jsx
+│   │   ├── ThemeContext.js
+│   │   └── ThemeProvider.jsx
+│   ├── hooks/           # Custom React hooks
+│   │   ├── useForm.js
+│   │   ├── useModal.js
+│   │   ├── useResponsive.js
+│   │   ├── useSearchFilter.js
+│   │   ├── useTask.js
+│   │   └── useToggle.js
+│   └── utils/           # Utility functions
+│       ├── auth.js
+│       ├── jwt.js
+│       ├── prisma.js
+│       └── toast.js
+├── prisma/
+│   └── schema.prisma    # Database schema
+├── .env.example         # Environment variables template
+├── .gitignore           # Git ignore file
+├── eslint.config.mjs    # ESLint configuration
+├── jsconfig.json        # JavaScript configuration
+├── next.config.mjs      # Next.js configuration
+├── package.json         # Dependencies and scripts
+├── postcss.config.mjs   # PostCSS configuration
+├── README.md            # Project documentation
+├── tailwind.config.js   # Tailwind CSS configuration
+└── tsconfig.json        # TypeScript configuration
 ```
 
-## Key Design Decisions
+## Database Schema
 
-### Architecture
-- **Separation of Concerns** - Clear boundaries between UI, business logic, and data
-- **Custom Hooks** - Encapsulated state logic for reusability
-- **Modular Routes** - Backend routes organized by domain
-- **Type Safety** - Prisma provides type-safe database queries
+The application uses three main models:
 
-### User Experience
-- **Optimistic Updates** - UI updates immediately while API calls process
-- **Progressive Enhancement** - Core features work without JavaScript
-- **Accessibility** - ARIA labels and keyboard navigation
-- **Performance** - Lazy loading and code splitting
+- **User**: Stores user authentication and profile information
+- **Project**: Manages projects with color coding
+- **Task**: Handles tasks with priorities, due dates, and status tracking
 
-### Development
-- **Environment Variables** - Secure configuration management
-- **CORS Configuration** - Proper cross-origin setup
-- **Error Boundaries** - Graceful error handling
-- **Code Quality** - ESLint configuration for consistency
+## Authentication
 
-## Testing Approach
+The application uses JWT tokens for authentication:
+- Tokens are stored in httpOnly cookies
+- Protected routes require valid authentication
+- Token expiration is set to 7 days
 
-Manual testing covered:
-- All CRUD operations
-- Authentication flows
-- Form validation edge cases
-- Responsive design breakpoints
-- Cross-browser compatibility
-- API error scenarios
+## Development Notes
+
+- The application uses Next.js 15 with the App Router
+- All API routes include proper error handling
+- Database queries are optimized with Prisma
+- Components are built with HeroUI for consistent styling
+- Form validation is implemented on both client and server
+- Tailwind CSS v4 with CSS-based configuration
+- JWT authentication with httpOnly cookies
+- Responsive design with mobile-first approach
 
 ## Deployment
 
-### Frontend (Vercel)
-1. Connect GitHub repository
-2. Set framework preset to Vite
-3. Add environment variable: `VITE_API_URL`
+The application can be deployed on any platform that supports Next.js:
 
-### Backend (Render/Railway)
-1. Connect GitHub repository
-2. Set build command: `npm install && npx prisma generate`
-3. Set start command: `npm start`
-4. Add environment variables
+1. **Vercel** (Recommended):
+   - Push to GitHub
+   - Connect repository to Vercel
+   - Add environment variables
+   - Deploy
 
-## Demo
+2. **Other Platforms**:
+   - Build the application: `npm run build`
+   - Set environment variables
+   - Start the server: `npm start`
 
-To quickly test the application:
-1. Register a new account
-2. Create a project (e.g., "Work Tasks")
-3. Add some tasks to the project
-4. Try different status updates
-5. Use search and filters
-6. Switch between card/table views
-7. Toggle dark mode
+## Contributing
 
-## Future Enhancements
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Open a pull request
 
-- Task due dates and reminders
-- Task priority levels
-- File attachments
-- Comments on tasks
-- Team collaboration
-- Email notifications
-- Recurring tasks
-- Task templates
-- Data export (CSV/PDF)
-- Mobile app
+## License
 
-## Submission Notes
-
-This application was built from scratch specifically for the technical assessment, demonstrating:
-- Proficiency in React.js and Node.js
-- Understanding of RESTful API design
-- Database design and management
-- Authentication implementation
-- UI/UX best practices
-- Clean, maintainable code
-
-All requirements have been met with additional features that showcase problem-solving abilities and attention to user experience.
+This project is licensed under the MIT License.
